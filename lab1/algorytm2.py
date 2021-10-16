@@ -1,5 +1,6 @@
 import random
 import time
+import math
 
 
 def create_random_matrix(n: int) -> list:
@@ -25,16 +26,23 @@ def read_matrix(matrix):
 
 def naive_algorithm(n, matrix):
     max_ = 0
-    for x1 in range(0, n):
-        for y1 in range(0, n):
-            for x2 in reversed(range(n-1, x1)):
-                for y2 in reversed(range(n-1, y1)):
+    iterat = 0
+    iterat_y = 0
+    iterat_x = 0
+    for x1 in range(0, n):  # n
+        for y1 in range(0, n): # n
+            for x2 in range(n-1, x1-1, -1): # n/2 + 1/2
+                for y2 in range(n-1, y1-1, -1):  # n/2 + 1/2
                     local_max = 0
                     for x in range(x1, x2+1):
+                        iterat = 0
+                        # print("x1:", x1," x2:",x2)
                         for y in range(y1, y2+1):
-                            local_max += matrix[x][y]
+                            local_max = local_max + matrix[x][y]
+                        # print(iterat)
                     if local_max == (x2-x1+1)*(y2-y1+1) and local_max > max_:
                         max_ = local_max
+
     return max_
 
 
@@ -53,7 +61,8 @@ def recurrent_algorithm(n, matrix):
         for y1 in range(0, n):
             for x2 in range(x1, n):
                 for y2 in range(y1, n):
-                    local_max = recursion(matrix, x1, y1, x2, y2) * (x2-x1+1) * (y2-y1+1)
+                    local_max = recursion(
+                        matrix, x1, y1, x2, y2) * (x2-x1+1) * (y2-y1+1)
                     if local_max > max_:
                         max_ = local_max
     return max_
@@ -61,7 +70,7 @@ def recurrent_algorithm(n, matrix):
 
 def dynamic_algorithm(n, matrix):
     max_ = 0
-    my_matrix=create_matrix(n,0)
+    my_matrix = create_matrix(n, 0)
     for y in range(0, n):
         for x1 in range(0, n):
             product = 1
@@ -94,14 +103,13 @@ def sensible_algorithm(n, matrix):
 
 
 if __name__ == '__main__':
-    n = 20
-    macierz = create_random_matrix(n)
-    # read_matrix(macierz)
+    starting_n = 1
 
-    for i in range(n, 100, 1):
+    for n in range(starting_n, 150, 1):
+        macierz = create_random_matrix(n)
         start = time.perf_counter()
-        x = naive_algorithm(i, macierz)
+        x = naive_algorithm(n, macierz)
         end = time.perf_counter()
         Tn = end - start
-        Fn = i*i*i*i*i*i
-        print("n: %1d \ttime: %2.10f \tfactor: %2.10f" % (i,Tn,Fn/Tn))
+        Fn = n*n*(n/2 + 0.5)*(n/2 + 0.5)*(n/2 + 0.5)*(n/2 + 0.5)/10000
+        print("n: %1d \ttime: %2.10f \tfactor: %2.10f" % (n,Tn,Fn/Tn))
