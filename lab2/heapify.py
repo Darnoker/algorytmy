@@ -1,45 +1,74 @@
 import math
 import heapq
 
-def heapify(list_, index, heapsize):
+def heapify(array, index, heapsize):
     largest = int()
-    left_child_index = 2*index
-    right_child_index = 2*index + 1
+    left_child_index = 2*index + 1
+    right_child_index = 2*index + 2
 
-    if left_child_index <= heapsize and list_[left_child_index] > list_[index]:
+    if left_child_index <= heapsize and array[left_child_index] > array[index]:
         largest = left_child_index
     else:
         largest = index
 
-    if right_child_index <= heapsize and list_[right_child_index] > list_[index]:
+    if right_child_index <= heapsize and array[right_child_index] > array[largest]:
         largest = right_child_index
 
     if largest != index:
-        temp = list_[index]
-        list_[index] = list_[largest]
-        list_[largest] = temp
+        temp = array[index]
+        array[index] = array[largest]
+        array[largest] = temp
 
-        heapify(list_, largest, heapsize)
-
-def buildHeap(list_):
-    list_length = len(list_) - 1
-    heapsize = list_length
-
-    for i in range(math.floor(list_length/2), -1 , -1):
-        heapify(list_, i, heapsize)
+        heapify(array, largest, heapsize)
 
 
 
+def IterativeHeapify(array, index, heapsize):
+    flag = True
+    while flag:
+        largest = int()
+        left_child_index = 2*index + 1
+        right_child_index = 2*index + 2
 
-array = [1,2,3,4,5,6]
-array2 = array
-print(len(array))
+        if left_child_index <= heapsize and array[left_child_index] > array[index]:
+            largest = left_child_index
+        else:
+            largest = index
 
-buildHeap(array)
+        if right_child_index <= heapsize and array[right_child_index] > array[largest]:
+            largest = right_child_index
 
+        if largest != index:
+            temp = array[index]
+            array[index] = array[largest]
+            array[largest] = temp
+            index = largest
+        else:
+            flag = False
+
+
+def buildHeap(array):
+    arraylength = len(array) - 1
+    heapsize = arraylength
+
+    for i in range(math.floor(arraylength/2), -1 , -1):
+        IterativeHeapify(array, i, heapsize)
+
+def heapSort(array):
+    buildHeap(array)
+    heapsize = len(array) - 1
+    array_length = len(array) - 1
+    for i in range(array_length, 1, -1):
+        temp = array[0]
+        array[0] = array[heapsize]
+        array[heapsize] = temp
+        heapsize = heapsize - 1
+        IterativeHeapify(array, 0, heapsize)
+
+array = [2,6,3,3,4,5,7,8,6,9]
+heapSort(array)
 print(array)
 
-heapq.heapify(array2)
-print(array2)
+
 
 
