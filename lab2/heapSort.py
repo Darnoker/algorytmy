@@ -23,10 +23,33 @@ def heapify(array, index, heapsize):
 
 
 
+# def IterativeHeapify(array, index, heapsize):
+#     flag = True
+#     while flag:
+#         largest = int()
+#         left_child_index = 2*index + 1
+#         right_child_index = 2*index + 2
+
+#         if left_child_index <= heapsize and array[left_child_index] > array[index]:
+#             largest = left_child_index
+#         else:
+#             largest = index
+
+#         if right_child_index <= heapsize and array[right_child_index] > array[largest]:
+#             largest = right_child_index
+
+#         if largest != index:
+#             temp = array[index]
+#             array[index] = array[largest]
+#             array[largest] = temp
+#             index = largest
+#         else:
+#             flag = False
+
+
 def IterativeHeapify(array, index, heapsize):
-    flag = True
-    while flag:
-        largest = int()
+    largest = heapsize + 1
+    while index != largest:
         left_child_index = 2*index + 1
         right_child_index = 2*index + 2
 
@@ -37,14 +60,13 @@ def IterativeHeapify(array, index, heapsize):
 
         if right_child_index <= heapsize and array[right_child_index] > array[largest]:
             largest = right_child_index
-
+            
         if largest != index:
             temp = array[index]
             array[index] = array[largest]
             array[largest] = temp
             index = largest
-        else:
-            flag = False
+            largest = heapsize + 1
 
 
 def buildHeap(array):
@@ -58,16 +80,27 @@ def heapSort(array):
     buildHeap(array)
     heapsize = len(array) - 1
     array_length = len(array) - 1
-    for i in range(array_length, 1, -1):
+    for i in range(array_length, 0, -1):
         temp = array[0]
         array[0] = array[heapsize]
         array[heapsize] = temp
         heapsize = heapsize - 1
         IterativeHeapify(array, 0, heapsize)
 
-array = [2,6,3,3,4,5,7,8,6,9]
-heapSort(array)
-print(array)
+read_file = open('liczby.txt')
+
+
+while(r := read_file.readline()):
+    split = r.split(' ')
+    array = []
+    for i in range(len(split)):
+        array.append(int(split[i]))
+    print("array before sort:", array)
+    heapSort(array)
+    print("array after sort:", array)
+    print()
+    
+
 
 
 
