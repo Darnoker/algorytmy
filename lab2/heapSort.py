@@ -1,5 +1,6 @@
 import math
 import heapq
+from os import write
 
 def heapify(array, index, heapsize):
     largest = int()
@@ -87,18 +88,37 @@ def heapSort(array):
         heapsize = heapsize - 1
         IterativeHeapify(array, 0, heapsize)
 
-read_file = open('liczby.txt')
+
+read_file = open("liczby-2.txt", "r")
+write_file = open("wynik-2.txt", "w")
+array = []
 
 
 while(r := read_file.readline()):
-    split = r.split(' ')
-    array = []
-    for i in range(len(split)):
-        array.append(int(split[i]))
-    print("array before sort:", array)
-    heapSort(array)
-    print("array after sort:", array)
-    print()
+    array.append(int(r))
+heapSort(array)
+write_file.write(str(array))
+write_file.write("\n")
+
+read_file.close()
+write_file.close()
+
+
+
+# read_file = open("liczby.txt", "r")
+# write_file = open("wynik.txt", "w")
+
+# while(r := read_file.readline()):
+#     split = r.split(' ')
+#     array = []
+#     for i in range(len(split)):
+#         array.append(int(split[i]))
+#     heapSort(array)
+#     write_file.write(str(array))
+#     write_file.write("\n")
+
+# read_file.close()
+# write_file.close()
     
 
 
