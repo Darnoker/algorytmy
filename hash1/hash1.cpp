@@ -5,24 +5,28 @@
 
 using namespace std;
 
-int convertToNumber(string text, int C)
+int convertToNumber(string text, int constant)
 {
 
     int length = text.size();
-    int numberFromString = (int)text[0];
+    unsigned long long numberFromString = (int)text[0];
     for (size_t i = 1; i < length - 1; i++)
-        numberFromString = (int)text[i] + C * numberFromString;
+        numberFromString = (unsigned int)text[i] + constant * numberFromString;
 
-    numberFromString = C * numberFromString + (int)text[length - 1];
+    numberFromString = constant * numberFromString + (int)text[length - 1];
 
-    return numberFromString;
+    if (numberFromString < 0)
+    {
+        numberFromString *= -1;
+    }
+
+    return numberFromString % 4294967296;
 }
 
-int h(int num, int m)
+int h(unsigned long long num, int m)
 {
     return num % m;
 }
-
 
 void printPrimes()
 {
@@ -30,13 +34,14 @@ void printPrimes()
     string line;
 
     ifstream primeNumbers;
-    primeNumbers.open("pierwsze.txt");
+    primeNumbers.open("./pierwsze.txt");
 
     vector<int> primes;
-    int number;
+    unsigned long number;
 
     if (primeNumbers.is_open())
     {
+        cout << "XD";
         while (primeNumbers >> number && number < 3761)
         {
             primes.push_back(number);
@@ -82,29 +87,38 @@ void printPrimes()
             }
         }
         int mean = sum / (m - count);
+        if (m - count == 0)
+        {
+            mean = 0;
+        }
+        else
+        {
+            mean = sum / (m - count);
+        }
         printf("\nPrime: %d, zero: %d,  max: %d, mean: %d\n ", primes[index], count, max, mean);
     }
 }
 
+void printPowers()
+{
 
-void printPowers() {
+    int constant = 3;
 
-    string line;
-    int number;
-
-    for (size_t index = 2; index < 10000; index*=2)
+    for (size_t arraySize = 2; arraySize < 100000; arraySize *= 2)
     {
+        string line;
+        unsigned long long number;
         ifstream napisy;
         napisy.open("napisy.txt");
-        int m = index;
-        int T[m] = {0};
+        int T[arraySize] = {0};
 
         if (napisy.is_open())
         {
+
             while (getline(napisy, line))
             {
-                number = convertToNumber(line, 3);
-                int key = h(number, m);
+                number = convertToNumber(line, constant);
+                int key = h(number, arraySize);
                 T[key]++;
             }
             napisy.close();
@@ -113,7 +127,7 @@ void printPowers() {
         int max = T[0];
         int sum = 0;
 
-        for (size_t i = 0; i < m; i++)
+        for (size_t i = 0; i < arraySize; i++)
         {
             // printf("%d ", T[i]);
             if (T[i] == 0)
@@ -129,16 +143,28 @@ void printPowers() {
                 sum += T[i];
             }
         }
-        int mean = sum / (m - count);
-        printf("\nPower of two: %d, zero: %d,  max: %d, mean: %d\n ", index, count, max, mean);
+        int mean;
+        if (arraySize - count == 0)
+        {
+            mean = 0;
+        }
+        else
+        {
+            mean = sum / (arraySize - count);
+        }
+        printf("Power of two: %d, zero: %d,  max: %d, mean: %d\n ", arraySize, count, max, mean);
     }
-
 }
-
 
 int main()
 {
     // printPrimes();
     printPowers();
 
+    //    string s = "intercallability";
+    //    unsigned  long number = convertToNumber(s, 3);
+    //    if (number < 0) {
+    //        number*=-1;
+    //    }
+    //    printf("%lu", number);
 }
