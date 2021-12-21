@@ -37,7 +37,7 @@ void printPrimes()
     primeNumbers.open("./pierwsze.txt");
 
     vector<int> primes;
-    unsigned long number;
+    unsigned long long number;
 
     if (primeNumbers.is_open())
     {
@@ -95,7 +95,7 @@ void printPrimes()
         {
             mean = sum / (m - count);
         }
-        printf("\nPrime: %d, zero: %d,  max: %d, mean: %d\n ", primes[index], count, max, mean);
+        printf("Prime: %d, zero: %d,  max: %d, mean: %d\n ", primes[index], count, max, mean);
     }
 }
 
@@ -158,8 +158,8 @@ void printPowers()
 
 int main()
 {
-    // printPrimes();
-    printPowers();
+   printPrimes();
+    //printPowers();
 
     //    string s = "intercallability";
     //    unsigned  long number = convertToNumber(s, 3);
