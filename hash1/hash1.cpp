@@ -41,7 +41,6 @@ void printPrimes()
 
     if (primeNumbers.is_open())
     {
-        cout << "XD";
         while (primeNumbers >> number && number < 3761)
         {
             primes.push_back(number);
